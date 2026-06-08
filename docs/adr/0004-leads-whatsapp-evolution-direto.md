@@ -26,9 +26,8 @@ com a notificação do lead já formatada e qualificada por ICP. Destino: **5522
 ## Consequências
 - Leads passam a ser entregues sem depender do n8n → resolve a pendência "método WhatsApp" do 0002.
 - Credenciais da Evolution (`EVOLUTION_API_KEY` = token da instância) são **server-only**, nunca no client.
-- Persistência durável (Google Sheets, CAPI, fila Upstash) **continua pendente** — hoje o lead só é notificado no
-  WhatsApp; se a Evolution estiver fora do ar após os retries, o lead não é persistido. Migrar para o fluxo completo
-  do 0002 (ou adicionar fallback durável) segue como melhoria.
+- Persistência durável: **resolvida no [ADR 0005](0005-registro-leads-google-sheets-apps-script.md)** (registro no
+  Google Sheets via Apps Script, em paralelo ao WhatsApp). CAPI/fila Upstash seguem como melhoria futura.
 - A instância usa Baileys (WhatsApp não-oficial): risco de desconexão/bloqueio inerente; monitorar `connectionStatus`.
 
 ## Variáveis de ambiente (novas)

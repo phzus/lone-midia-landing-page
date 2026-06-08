@@ -5,8 +5,9 @@
 > [adr/0004-leads-whatsapp-evolution-direto.md](adr/0004-leads-whatsapp-evolution-direto.md).
 
 ## Arquitetura (server-to-server; credenciais nunca expostas ao browser)
-**Em produção hoje:** o lead é entregue **direto no WhatsApp do time** via Evolution API. O n8n segue suportado,
-porém **opcional** (só dispara se `N8N_WEBHOOK_URL` existir). Os dois destinos rodam em paralelo.
+**Em produção hoje:** cada lead é (1) **notificado no WhatsApp do time** via Evolution API e (2) **registrado na
+planilha Google** via Apps Script Web App. O n8n segue suportado, porém **opcional** (só dispara se `N8N_WEBHOOK_URL`
+existir). Os destinos rodam em paralelo (`Promise.all`).
 ```
 Browser (LeadForm: RHF + Zod + Turnstile)
    └─ POST same-origin ─▶ Next.js Route Handler  /api/lead  (runtime = nodejs)
@@ -14,15 +15,18 @@ Browser (LeadForm: RHF + Zod + Turnstile)
                               ├─ POST apikey ──▶ Evolution API (sendText)  ── ATIVO
                               │                   instância `agent-prospec` (5522981816966)
                               │                   └─▶ WhatsApp do time → LEAD_WHATSAPP_TO (5522981530700)
+                              ├─ POST urlenc ──▶ Apps Script Web App ────── ATIVO
+                              │                   └─▶ Google Sheets (append aba "Leads")
                               └─ POST HMAC ────▶ n8n self-hosted (webhook) ── OPCIONAL (se configurado)
-                                                  ├─▶ Google Sheets (append)
                                                   └─▶ Meta Conversions API (evento Lead, dedupe c/ Pixel)
 ```
-**Por que o Route Handler no meio:** chamar a Evolution/n8n direto do client exporia URL/apikey/secret, permitiria flood e burlaria o Turnstile/rate-limit. O Route Handler é o único ponto que fala com os destinos.
+**Por que o Route Handler no meio:** chamar a Evolution/Sheets/n8n direto do client exporia URL/apikey/secret, permitiria flood e burlaria o Turnstile/rate-limit. O Route Handler é o único ponto que fala com os destinos.
 
 **Envio à Evolution** ([src/lib/evolution.ts](../src/lib/evolution.ts)): `POST {EVOLUTION_API_URL}/message/sendText/{EVOLUTION_INSTANCE}`, header `apikey`, body `{number, text}`. Mensagem formatada com badge de temperatura, score ICP, dados do lead, origem (UTM) e link `wa.me` p/ responder. Retry 3× backoff + timeout 8s.
 
-> ⚠️ **Persistência durável ainda pendente:** hoje o lead só é *notificado* no WhatsApp. Não há Sheets/banco/fila de fallback no fluxo ativo — se a Evolution cair após os retries, o lead não fica registrado. Ver pendência no ADR 0004.
+**Registro no Sheets** ([src/lib/sheets.ts](../src/lib/sheets.ts)): `POST {SHEETS_WEBAPP_URL}` como `application/x-www-form-urlencoded` (o Apps Script lê `e.parameter`). Chaves: `nome, email, whatsapp, empresa, segmento, mrr, desafio` (timestamp gerado pelo script). Colunas da aba "Leads": Timestamp · Nome completo · WhatsApp · Email corporativo · Empresa · Segmento · Receita Mensal (MRR) · Maior desafio. Retry 3× backoff + timeout 8s. Código do Apps Script vive na própria planilha.
+
+> ✅ O lead só é marcado `degraded` se **nenhum** destino confirmar entrega. Com WhatsApp + Sheets ativos, há registro durável (planilha) além da notificação. Observação: o Apps Script responde HTTP 200 mesmo em erro interno (try/catch próprio), então a confirmação aqui é "entregue ao Web App", não "linha gravada".
 
 ## Campos do formulário (schema único Zod — `src/lib/lead-schema.ts`, reusado client + server)
 | Campo | Tipo | Validação (resumo) | Obrig. |
@@ -89,7 +93,7 @@ Browser (LeadForm: RHF + Zod + Turnstile)
 ## Variáveis de ambiente
 | Público (`NEXT_PUBLIC_`) | Server-only (env Vercel / `.env.local` no .gitignore) | Só no n8n (se usado) |
 |---|---|---|
-| `META_PIXEL_ID`, `TURNSTILE_SITE_KEY`, `WHATSAPP_NUMBER` (contato) | `EVOLUTION_API_URL`, `EVOLUTION_INSTANCE`, `EVOLUTION_API_KEY`, `LEAD_WHATSAPP_TO`, `IP_SALT`, `TURNSTILE_SECRET_KEY`, `UPSTASH_REDIS_*`, `N8N_WEBHOOK_URL`/`N8N_WEBHOOK_SECRET` (opcionais) | Meta CAPI token, Google service account |
+| `META_PIXEL_ID`, `TURNSTILE_SITE_KEY`, `WHATSAPP_NUMBER` (contato) | `EVOLUTION_API_URL`, `EVOLUTION_INSTANCE`, `EVOLUTION_API_KEY`, `LEAD_WHATSAPP_TO`, `SHEETS_WEBAPP_URL`, `IP_SALT`, `TURNSTILE_SECRET_KEY`, `UPSTASH_REDIS_*`, `N8N_WEBHOOK_URL`/`N8N_WEBHOOK_SECRET` (opcionais) | Meta CAPI token |
 - Validar presença das envs no boot (`env.ts` com Zod) — falhar cedo.
 
 ## Dependências sugeridas

@@ -8,10 +8,13 @@
   instância `agent-prospec` / 5522981816966 → destino **5522981530700**). Ver [ADR 0004](adr/0004-leads-whatsapp-evolution-direto.md).
 - **Implementação:** `src/lib/evolution.ts` (`forwardToWhatsApp` + mensagem formatada com ICP/score/UTM/link wa.me);
   `/api/lead` agora dispara WhatsApp **e** n8n (opcional) em paralelo; `degraded` só se nenhum destino confirmar.
-- **Testado end-to-end:** envio direto à Evolution (HTTP 201) e POST real em `/api/lead` → `degraded:false`,
-  mensagem entregue no WhatsApp. `bun run build` limpo.
-- **Pendente:** cadastrar as envs `EVOLUTION_*`/`LEAD_WHATSAPP_TO` na Vercel; persistência durável (Sheets/banco/fila)
-  ainda não existe no fluxo ativo — só notificação.
+- **Registro durável no Google Sheets** ([ADR 0005](adr/0005-registro-leads-google-sheets-apps-script.md)):
+  `src/lib/sheets.ts` (`forwardToSheets`) faz POST `form-urlencoded` ao Apps Script Web App da planilha do Pedro
+  (lê `e.parameter` → append na aba "Leads"). Agora `/api/lead` dispara WhatsApp + Sheets + n8n (opcional) em paralelo.
+- **Testado end-to-end:** Evolution direto (HTTP 201), Apps Script ("Requisição recebida com sucesso!") e POST real
+  em `/api/lead` → `degraded:false` com WhatsApp + Sheets entregues. `bun run build` limpo.
+  (⚠️ ficaram 3 linhas de teste na planilha — apagar.)
+- **Pendente:** cadastrar `EVOLUTION_*`, `LEAD_WHATSAPP_TO` e `SHEETS_WEBAPP_URL` na Vercel antes do deploy.
 
 ## 2026-06-05 — Landing construída, buildando e rodando ✅
 - **Stack confirmado:** Next.js 16.2.7 (App Router, Turbopack) + React 19 + Tailwind v4 + **Bun** (ADR 0003).

@@ -3,6 +3,7 @@ import crypto from "node:crypto";
 import { leadSchema, attributionSchema } from "@/lib/lead-schema";
 import { classifyIcp, isPersonalEmail } from "@/lib/icp";
 import { forwardToWhatsApp, type LeadNotification } from "@/lib/evolution";
+import { forwardToSheets } from "@/lib/sheets";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -224,12 +225,13 @@ export async function POST(req: Request) {
     atribuicao: attribution,
   };
 
-  // Notifica o time no WhatsApp (Evolution API) e, se configurado, encaminha ao
-  // n8n. Em paralelo; o lead só é "degraded" se nenhum destino confirmou entrega.
-  const [whatsappOk, n8nOk] = await Promise.all([
+  // Destinos em paralelo: WhatsApp (Evolution), planilha (Sheets) e n8n (opcional).
+  // O lead só é "degraded" se NENHUM destino confirmou entrega.
+  const [whatsappOk, sheetsOk, n8nOk] = await Promise.all([
     forwardToWhatsApp(notification),
+    forwardToSheets(notification),
     forwardToN8n(payload, id),
   ]);
 
-  return ok({ id, degraded: !(whatsappOk || n8nOk) });
+  return ok({ id, degraded: !(whatsappOk || sheetsOk || n8nOk) });
 }
