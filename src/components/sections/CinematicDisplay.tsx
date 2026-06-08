@@ -2,9 +2,9 @@ import { Container } from "@/components/ui/Container";
 import { Section } from "@/components/ui/Section";
 import { GlowBlob } from "@/components/ui/GlowBlob";
 import { Reveal } from "@/components/ui/Reveal";
+import { CinematicHeadline } from "./CinematicHeadline";
 
-/** Momento cinematográfico: tipografia display gigante + glow.
- *  data-cinematic marca o alvo p/ o parallax do GSAP (ver ScrollFx). */
+/** Momento cinematográfico: tipografia display gigante + glow + parallax no scroll. */
 export function CinematicDisplay() {
   return (
     <Section bg="void" className="vignette py-28 sm:py-36">
@@ -14,17 +14,9 @@ export function CinematicDisplay() {
           <p className="eyebrow mb-6 justify-center text-center">
             Tráfego que vira caixa — não vaidade
           </p>
-          <h2
-            data-cinematic
-            className="font-display font-bold uppercase leading-[0.86] tracking-[-0.04em]"
-          >
-            <span className="block bg-linear-to-b from-ink to-ink/10 bg-clip-text text-[clamp(3rem,15vw,11rem)] text-transparent">
-              Escala
-            </span>
-            <span className="block bg-linear-to-b from-ink to-ink/10 bg-clip-text text-[clamp(2.75rem,13vw,10rem)] text-transparent">
-              Previsível
-            </span>
-          </h2>
+        </Reveal>
+        <CinematicHeadline lines={["Escala", "Previsível"]} />
+        <Reveal delay={0.1}>
           <p className="mx-auto mt-8 max-w-xl text-lg leading-relaxed text-ink-soft">
             Você aumenta o investimento sabendo quanto retorna. Crescer deixa de
             ser aposta e vira processo.

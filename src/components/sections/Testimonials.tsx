@@ -3,6 +3,7 @@ import { Section } from "@/components/ui/Section";
 import { Eyebrow } from "@/components/ui/Eyebrow";
 import { GlassCard } from "@/components/ui/GlassCard";
 import { Reveal } from "@/components/ui/Reveal";
+import { Stagger, StaggerItem } from "@/components/ui/Stagger";
 import { Quote, User } from "lucide-react";
 import { TESTIMONIALS_PLACEHOLDER } from "@/lib/content";
 
@@ -22,9 +23,9 @@ export function Testimonials() {
           </p>
         </Reveal>
 
-        <div className="mt-12 grid grid-cols-1 gap-5 md:grid-cols-3">
+        <Stagger className="mt-12 grid grid-cols-1 gap-5 md:grid-cols-3">
           {TESTIMONIALS_PLACEHOLDER.map((t, i) => (
-            <Reveal key={i} delay={i * 0.08}>
+            <StaggerItem key={i} className="h-full">
               <GlassCard hairline className="flex h-full flex-col p-6">
                 <Quote className="h-7 w-7 text-brand" aria-hidden="true" />
                 <p className="mt-4 font-display text-lg font-bold tracking-tight text-ink">
@@ -44,9 +45,9 @@ export function Testimonials() {
                   </div>
                 </div>
               </GlassCard>
-            </Reveal>
+            </StaggerItem>
           ))}
-        </div>
+        </Stagger>
       </Container>
     </Section>
   );

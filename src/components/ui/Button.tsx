@@ -13,7 +13,7 @@ const sizes: Record<Size, string> = {
 
 const variants: Record<Variant, string> = {
   primary:
-    "text-white bg-linear-to-b from-brand-hi to-brand border-b-2 border-brand-deep shadow-[0_8px_30px_-4px_rgba(0,64,255,0.5)] hover:shadow-[0_10px_38px_-2px_rgba(0,64,255,0.65)] hover:brightness-110",
+    "btn-sheen text-white bg-linear-to-b from-brand-hi to-brand border-b-2 border-brand-deep shadow-[0_8px_30px_-4px_rgba(0,64,255,0.5)] hover:shadow-[0_10px_38px_-2px_rgba(0,64,255,0.65)] hover:brightness-110",
   ghost:
     "text-ink border border-white/15 bg-white/[0.03] hover:bg-white/[0.07] hover:border-white/25",
 };

@@ -6,6 +6,7 @@ import { GlassCard } from "@/components/ui/GlassCard";
 import { GlowBlob } from "@/components/ui/GlowBlob";
 import { Button } from "@/components/ui/Button";
 import { Reveal } from "@/components/ui/Reveal";
+import { Stagger, StaggerItem } from "@/components/ui/Stagger";
 import { PILLARS } from "@/lib/content";
 
 export function LoneGrowth() {
@@ -41,9 +42,9 @@ export function LoneGrowth() {
           </Reveal>
         </div>
 
-        <div className="mt-14 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          {PILLARS.map((p, i) => (
-            <Reveal key={p.n} delay={i * 0.08}>
+        <Stagger className="mt-14 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          {PILLARS.map((p) => (
+            <StaggerItem key={p.n} className="h-full">
               <GlassCard hover hairline className="h-full p-6">
                 <div className="flex items-center justify-between">
                   <Image
@@ -65,9 +66,9 @@ export function LoneGrowth() {
                   {p.desc}
                 </p>
               </GlassCard>
-            </Reveal>
+            </StaggerItem>
           ))}
-        </div>
+        </Stagger>
 
         <Reveal delay={0.1}>
           <p className="mx-auto mt-16 max-w-2xl text-center font-display text-2xl font-light italic tracking-tight text-ink-soft sm:text-3xl">

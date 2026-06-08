@@ -197,6 +197,30 @@ body {
   animation: breathe 10s ease-in-out infinite;
 }
 
+/* ---------- CTA: sheen (brilho que cruza no hover) ---------- */
+.btn-sheen {
+  position: relative;
+  overflow: hidden;
+}
+.btn-sheen::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    110deg,
+    transparent 32%,
+    rgba(255, 255, 255, 0.28) 50%,
+    transparent 68%
+  );
+  transform: translateX(-130%);
+  transition: transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+  pointer-events: none;
+}
+.btn-sheen:hover::after,
+.btn-sheen:focus-visible::after {
+  transform: translateX(130%);
+}
+
 /* ---------- Acessibilidade: reduzir movimento ---------- */
 @media (prefers-reduced-motion: reduce) {
   html {
@@ -205,6 +229,9 @@ body {
   .marquee-track,
   .animate-breathe {
     animation: none !important;
+  }
+  .btn-sheen::after {
+    display: none;
   }
   *,
   *::before,

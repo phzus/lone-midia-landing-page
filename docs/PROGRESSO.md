@@ -1,5 +1,18 @@
 # Progresso — Landing Page (Lone Mídia)
 
+## 2026-06-08 — Animações cinematográficas (Framer Motion) ✅
+- **Decisão de lib:** só **Framer Motion**, sem GSAP ([ADR 0006](adr/0006-animacoes-framer-motion.md)) — um sistema
+  só, React-first, `useReducedMotion` integrado. `gsap` vira dep não usada (pode remover depois).
+- **Primitivos:** `Stagger`/`StaggerItem` ([ui/Stagger.tsx](../src/components/ui/Stagger.tsx)) — cascata coesa por
+  grupo, substituindo o `delay={i*0.08}` manual. `Reveal` mantido p/ blocos isolados.
+- **Hero:** fundo com parallax no scroll ([HeroBackdrop.tsx](../src/components/sections/HeroBackdrop.tsx)) +
+  headline/copy/CTAs/stats em cascata.
+- **CinematicDisplay:** display gigante sobe e cresce ao atravessar a viewport
+  ([CinematicHeadline.tsx](../src/components/sections/CinematicHeadline.tsx)) — usa o hook `data-cinematic`.
+- **LoneGrowth / Testimonials:** grids migrados p/ `Stagger`. **CTA primário:** sheen no hover (puro CSS).
+- Tudo `transform`/`opacity` (60fps), com fallback `prefers-reduced-motion`. `bun run build` limpo; lint sem novos
+  problemas (só o baseline pré-existente); `/api/lead` testado pós-mudança (segue `degraded:false`).
+
 ## 2026-06-08 — Repo no GitHub + leads entregues no WhatsApp (Evolution API) ✅
 - **Versionamento:** projeto inicializado em git e publicado em `github.com/phzus/lone-midia-landing-page`
   (branch `main`). `.claude/` (skills locais) ficou **fora** do repo; `.env*` segue ignorado — nenhum segredo subiu.
