@@ -1,0 +1,214 @@
+@import "tailwindcss";
+
+/* ============================================================
+   Lone Mídia — Design System (noir cinematográfico premium)
+   Tokens em docs/DESIGN.md. Azul = sinal EXCLUSIVO de ação.
+   ============================================================ */
+@theme {
+  /* Fundos */
+  --color-night: #08080a; /* base global */
+  --color-coal: #0e0e12; /* seções alternadas / base de vidro */
+  --color-void: #050507; /* divisores / footer / ponto + escuro */
+  --color-glass: #12131a; /* preenchimento base do card de vidro */
+
+  /* Marca (azul = só ação) */
+  --color-brand: #0040ff;
+  --color-brand-hi: #2d5bff;
+  --color-brand-deep: #001451;
+  --color-cyan: #00abeb;
+
+  /* Texto */
+  --color-ink: #f4f5f7; /* primário (off-white) */
+  --color-ink-soft: #a9adb8; /* secundário ~7:1 */
+  --color-ink-mute: #6b6f7b; /* labels/captions ~4.6:1 */
+
+  /* Sinais */
+  --color-strike: #f45454; /* preço riscado */
+  --color-success: #3dd68c; /* sucesso / checkmarks */
+
+  /* Tipografia — Helvetica Now Display (fallback até os .woff2 chegarem do Drive) */
+  --font-sans: "Helvetica Now Display", "Helvetica Neue", Arial, system-ui, sans-serif;
+  --font-display: "Helvetica Now Display", "Helvetica Neue", Arial, system-ui, sans-serif;
+
+  /* Layout */
+  --spacing-section: 8rem;
+}
+
+:root {
+  color-scheme: dark;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--color-night);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  overflow-x: hidden;
+}
+
+/* Tracking display premium para títulos */
+.font-display {
+  font-family: var(--font-display);
+  letter-spacing: -0.03em;
+}
+
+/* Eyebrow / numeração — uppercase + tracking positivo (assinatura otus) */
+.eyebrow {
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--color-ink-mute);
+}
+
+/* ---------- Grain / noise global ---------- */
+.grain-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  pointer-events: none;
+  opacity: 0.05;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* ---------- Vinheta noir ---------- */
+.vignette::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(
+    120% 120% at 50% 0%,
+    transparent 55%,
+    rgba(0, 0, 0, 0.85) 100%
+  );
+}
+
+/* ---------- Glow ambient (azul vazando da escuridão) ---------- */
+.glow-blob {
+  position: absolute;
+  border-radius: 9999px;
+  background: var(--color-brand);
+  filter: blur(120px);
+  opacity: 0.2;
+  pointer-events: none;
+  will-change: opacity;
+}
+
+/* ---------- Glassmorphism ---------- */
+.glass {
+  background-color: color-mix(in srgb, var(--color-glass) 55%, transparent);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.06);
+}
+.glass-hover {
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+.glass-hover:hover {
+  border-color: rgba(0, 64, 255, 0.4);
+  box-shadow:
+    0 0 40px -8px rgba(0, 64, 255, 0.35),
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.06);
+}
+
+/* ---------- Hairline gradient border (luz caindo) ---------- */
+.hairline-top {
+  position: relative;
+}
+.hairline-top::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.18),
+    rgba(255, 255, 255, 0.02) 40%,
+    transparent
+  );
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
+/* ---------- Fade lateral p/ marquees ---------- */
+.mask-x {
+  -webkit-mask-image: linear-gradient(
+    90deg,
+    transparent,
+    #000 12%,
+    #000 88%,
+    transparent
+  );
+  mask-image: linear-gradient(
+    90deg,
+    transparent,
+    #000 12%,
+    #000 88%,
+    transparent
+  );
+}
+
+/* ---------- Marquee infinito (CSS, sem JS) ---------- */
+@keyframes marquee-x {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+.marquee-track {
+  display: flex;
+  width: max-content;
+  animation: marquee-x var(--marquee-duration, 35s) linear infinite;
+}
+.marquee:hover .marquee-track {
+  animation-play-state: paused;
+}
+
+/* ---------- Glow "respirando" ---------- */
+@keyframes breathe {
+  0%,
+  100% {
+    opacity: 0.16;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.26;
+    transform: scale(1.08);
+  }
+}
+.animate-breathe {
+  animation: breathe 10s ease-in-out infinite;
+}
+
+/* ---------- Acessibilidade: reduzir movimento ---------- */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .marquee-track,
+  .animate-breathe {
+    animation: none !important;
+  }
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0.01ms !important;
+  }
+}
