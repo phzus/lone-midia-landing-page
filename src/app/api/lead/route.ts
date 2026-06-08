@@ -12,6 +12,31 @@ const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 const ok = (extra: Record<string, unknown> = {}) =>
   NextResponse.json({ ok: true, ...extra });
 
+/**
+ * Diagnóstico de configuração — diz quais destinos estão prontos, sem expor
+ * nenhum valor secreto (só os NOMES das envs que faltam). Útil pra checar o deploy.
+ */
+export function GET() {
+  const missing = (keys: string[]) => keys.filter((k) => !process.env[k]);
+  const whatsapp = missing([
+    "EVOLUTION_API_URL",
+    "EVOLUTION_INSTANCE",
+    "EVOLUTION_API_KEY",
+    "LEAD_WHATSAPP_TO",
+  ]);
+  const sheets = missing(["SHEETS_WEBAPP_URL"]);
+  const n8n = missing(["N8N_WEBHOOK_URL"]);
+  return NextResponse.json({
+    ok: true,
+    ambiente: process.env.VERCEL_ENV ?? "development",
+    destinos: {
+      whatsapp: { configurado: whatsapp.length === 0, faltando: whatsapp },
+      sheets: { configurado: sheets.length === 0, faltando: sheets },
+      n8n: { configurado: n8n.length === 0, faltando: n8n },
+    },
+  });
+}
+
 function getIp(req: Request): string {
   const xff = req.headers.get("x-forwarded-for");
   return (xff?.split(",")[0] ?? "0.0.0.0").trim();
