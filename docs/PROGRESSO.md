@@ -1,5 +1,18 @@
 # Progresso — Landing Page (Lone Mídia)
 
+## 2026-06-08 — Repo no GitHub + leads entregues no WhatsApp (Evolution API) ✅
+- **Versionamento:** projeto inicializado em git e publicado em `github.com/phzus/lone-midia-landing-page`
+  (branch `main`). `.claude/` (skills locais) ficou **fora** do repo; `.env*` segue ignorado — nenhum segredo subiu.
+- **Destino dos leads resolvido:** antes o lead caía só em `console.warn` e se perdia (n8n sem credenciais).
+  Decisão do Pedro = notificar **direto no WhatsApp** via Evolution API self-hosted (`evo.lonemidia.com`,
+  instância `agent-prospec` / 5522981816966 → destino **5522981530700**). Ver [ADR 0004](adr/0004-leads-whatsapp-evolution-direto.md).
+- **Implementação:** `src/lib/evolution.ts` (`forwardToWhatsApp` + mensagem formatada com ICP/score/UTM/link wa.me);
+  `/api/lead` agora dispara WhatsApp **e** n8n (opcional) em paralelo; `degraded` só se nenhum destino confirmar.
+- **Testado end-to-end:** envio direto à Evolution (HTTP 201) e POST real em `/api/lead` → `degraded:false`,
+  mensagem entregue no WhatsApp. `bun run build` limpo.
+- **Pendente:** cadastrar as envs `EVOLUTION_*`/`LEAD_WHATSAPP_TO` na Vercel; persistência durável (Sheets/banco/fila)
+  ainda não existe no fluxo ativo — só notificação.
+
 ## 2026-06-05 — Landing construída, buildando e rodando ✅
 - **Stack confirmado:** Next.js 16.2.7 (App Router, Turbopack) + React 19 + Tailwind v4 + **Bun** (ADR 0003).
   Libs: framer-motion 12, gsap 3.15, zod **v4**, react-hook-form 7, @marsidev/react-turnstile, @upstash/ratelimit, lucide-react v1.

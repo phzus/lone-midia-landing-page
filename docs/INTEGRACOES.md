@@ -1,19 +1,28 @@
 # Integrações & Segurança
 
 > Captura de leads da landing. Toda mudança aqui respeita o baseline de segurança do [CLAUDE.md](../CLAUDE.md).
-> Decisão de arquitetura: [adr/0002-captura-leads-n8n.md](adr/0002-captura-leads-n8n.md).
+> Decisão de arquitetura: [adr/0002-captura-leads-n8n.md](adr/0002-captura-leads-n8n.md) +
+> [adr/0004-leads-whatsapp-evolution-direto.md](adr/0004-leads-whatsapp-evolution-direto.md).
 
-## Arquitetura (server-to-server, n8n nunca exposto ao browser)
+## Arquitetura (server-to-server; credenciais nunca expostas ao browser)
+**Em produção hoje:** o lead é entregue **direto no WhatsApp do time** via Evolution API. O n8n segue suportado,
+porém **opcional** (só dispara se `N8N_WEBHOOK_URL` existir). Os dois destinos rodam em paralelo.
 ```
 Browser (LeadForm: RHF + Zod + Turnstile)
    └─ POST same-origin ─▶ Next.js Route Handler  /api/lead  (runtime = nodejs)
-                              │  (Turnstile + honeypot + time-trap + rate-limit + Zod + classifica ICP + HMAC)
-                              └─ POST assinado ─▶ n8n self-hosted (webhook)
-                                                    ├─▶ Google Sheets (append)
-                                                    ├─▶ WhatsApp (notifica time se ICP)
-                                                    └─▶ Meta Conversions API (evento Lead, dedupe c/ Pixel)
+                              │  (Turnstile + honeypot + time-trap + rate-limit + Zod + classifica ICP)
+                              ├─ POST apikey ──▶ Evolution API (sendText)  ── ATIVO
+                              │                   instância `agent-prospec` (5522981816966)
+                              │                   └─▶ WhatsApp do time → LEAD_WHATSAPP_TO (5522981530700)
+                              └─ POST HMAC ────▶ n8n self-hosted (webhook) ── OPCIONAL (se configurado)
+                                                  ├─▶ Google Sheets (append)
+                                                  └─▶ Meta Conversions API (evento Lead, dedupe c/ Pixel)
 ```
-**Por que o Route Handler no meio:** chamar o n8n direto do client exporia URL/secret do webhook, permitiria flood e burlaria o Turnstile/rate-limit. O Route Handler é o único ponto que fala com o n8n.
+**Por que o Route Handler no meio:** chamar a Evolution/n8n direto do client exporia URL/apikey/secret, permitiria flood e burlaria o Turnstile/rate-limit. O Route Handler é o único ponto que fala com os destinos.
+
+**Envio à Evolution** ([src/lib/evolution.ts](../src/lib/evolution.ts)): `POST {EVOLUTION_API_URL}/message/sendText/{EVOLUTION_INSTANCE}`, header `apikey`, body `{number, text}`. Mensagem formatada com badge de temperatura, score ICP, dados do lead, origem (UTM) e link `wa.me` p/ responder. Retry 3× backoff + timeout 8s.
+
+> ⚠️ **Persistência durável ainda pendente:** hoje o lead só é *notificado* no WhatsApp. Não há Sheets/banco/fila de fallback no fluxo ativo — se a Evolution cair após os retries, o lead não fica registrado. Ver pendência no ADR 0004.
 
 ## Campos do formulário (schema único Zod — `src/lib/lead-schema.ts`, reusado client + server)
 | Campo | Tipo | Validação (resumo) | Obrig. |
@@ -78,9 +87,9 @@ Browser (LeadForm: RHF + Zod + Turnstile)
 - `Strict-Transport-Security` (HSTS preload), `X-Content-Type-Options: nosniff`, `Referrer-Policy: strict-origin-when-cross-origin`, `X-Frame-Options: DENY`, `Permissions-Policy: camera=(), microphone=(), geolocation=()`.
 
 ## Variáveis de ambiente
-| Público (`NEXT_PUBLIC_`) | Server-only (env Vercel / `.env.local` no .gitignore) | Só no n8n |
+| Público (`NEXT_PUBLIC_`) | Server-only (env Vercel / `.env.local` no .gitignore) | Só no n8n (se usado) |
 |---|---|---|
-| `META_PIXEL_ID`, `TURNSTILE_SITE_KEY`, `WHATSAPP_NUMBER` (contato) | `N8N_WEBHOOK_URL`, `N8N_WEBHOOK_SECRET`, `TURNSTILE_SECRET_KEY`, `UPSTASH_REDIS_*` | Meta CAPI token, WhatsApp API token, Google service account |
+| `META_PIXEL_ID`, `TURNSTILE_SITE_KEY`, `WHATSAPP_NUMBER` (contato) | `EVOLUTION_API_URL`, `EVOLUTION_INSTANCE`, `EVOLUTION_API_KEY`, `LEAD_WHATSAPP_TO`, `IP_SALT`, `TURNSTILE_SECRET_KEY`, `UPSTASH_REDIS_*`, `N8N_WEBHOOK_URL`/`N8N_WEBHOOK_SECRET` (opcionais) | Meta CAPI token, Google service account |
 - Validar presença das envs no boot (`env.ts` com Zod) — falhar cedo.
 
 ## Dependências sugeridas

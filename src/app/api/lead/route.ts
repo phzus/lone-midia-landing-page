@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import crypto from "node:crypto";
 import { leadSchema, attributionSchema } from "@/lib/lead-schema";
 import { classifyIcp, isPersonalEmail } from "@/lib/icp";
+import { forwardToWhatsApp, type LeadNotification } from "@/lib/evolution";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -215,6 +216,20 @@ export async function POST(req: Request) {
     },
   };
 
-  const forwarded = await forwardToN8n(payload, id);
-  return ok({ id, degraded: !forwarded });
+  const notification: LeadNotification = {
+    id,
+    submittedAt: payload.submittedAt,
+    lead: payload.lead,
+    qualificacao,
+    atribuicao: attribution,
+  };
+
+  // Notifica o time no WhatsApp (Evolution API) e, se configurado, encaminha ao
+  // n8n. Em paralelo; o lead só é "degraded" se nenhum destino confirmou entrega.
+  const [whatsappOk, n8nOk] = await Promise.all([
+    forwardToWhatsApp(notification),
+    forwardToN8n(payload, id),
+  ]);
+
+  return ok({ id, degraded: !(whatsappOk || n8nOk) });
 }

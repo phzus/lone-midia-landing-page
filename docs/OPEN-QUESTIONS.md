@@ -14,7 +14,8 @@ Landing **construída e rodando** (`bun run build` limpo; dev http://localhost:3
 
 ## Integrações / produção (preencher `.env.local`)
 - **Domínio** + acesso ao DNS (apontar Vercel) → setar `NEXT_PUBLIC_SITE_URL`.
-- **n8n** — `N8N_WEBHOOK_URL` + `N8N_WEBHOOK_SECRET`; planilha Google (ID/aba); **WhatsApp: Cloud API vs Evolution** + número de origem.
+- ~~**WhatsApp: Cloud API vs Evolution** + número de origem~~ → **RESOLVIDO (2026-06-08, ADR 0004):** Evolution API (`evo.lonemidia.com`, instância `agent-prospec` / 5522981816966), lead vai p/ 5522981530700. Falta cadastrar `EVOLUTION_*` + `LEAD_WHATSAPP_TO` na Vercel.
+- **n8n (opcional)** — `N8N_WEBHOOK_URL` + `N8N_WEBHOOK_SECRET`; planilha Google (ID/aba). Só se quiser persistência durável + CAPI além do WhatsApp.
 - **Meta Pixel** — `NEXT_PUBLIC_META_PIXEL_ID`; usar CAPI? valor do evento Lead?
 - **Turnstile** — `NEXT_PUBLIC_TURNSTILE_SITE_KEY` + `TURNSTILE_SECRET_KEY` (anti-spam).
 - **Upstash** — `UPSTASH_REDIS_REST_URL/TOKEN` (rate-limit em produção).
