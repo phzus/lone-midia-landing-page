@@ -4,6 +4,7 @@ import { Eyebrow } from "@/components/ui/Eyebrow";
 import { GlassCard } from "@/components/ui/GlassCard";
 import { GlowBlob } from "@/components/ui/GlowBlob";
 import { Button } from "@/components/ui/Button";
+import { ScramblePrice } from "@/components/ui/ScramblePrice";
 import { Reveal } from "@/components/ui/Reveal";
 import { Check } from "lucide-react";
 import { VALUE_STACK, VALUE_STACK_TOTAL } from "@/lib/content";
@@ -26,7 +27,7 @@ export function ValueStack() {
         </Reveal>
 
         <Reveal delay={0.1} className="mx-auto mt-12 max-w-3xl">
-          <GlassCard hairline className="p-6 sm:p-9">
+          <GlassCard hairline className="p-6 pb-10 sm:p-9 sm:pb-14">
             <ul className="divide-y divide-white/8">
               {VALUE_STACK.map((item) => (
                 <li
@@ -54,10 +55,17 @@ export function ValueStack() {
                   {brl(VALUE_STACK_TOTAL)}
                 </span>
               </p>
-              <p className="mx-auto mt-5 max-w-lg font-display text-2xl font-bold leading-tight tracking-tight text-ink sm:text-3xl">
-                O investimento é apresentado no seu diagnóstico gratuito.
-              </p>
-              <p className="mx-auto mt-3 max-w-md text-sm leading-relaxed text-ink-mute">
+              <div className="mt-6 flex flex-col items-center">
+                <p className="text-base font-medium uppercase tracking-[0.18em] text-[#d9d9d9] sm:text-lg">
+                  Por apenas
+                </p>
+                <ScramblePrice
+                  template="R$ ##,##"
+                  srLabel="Valor personalizado, revelado no seu diagnóstico gratuito"
+                  className="mt-2 font-display text-5xl font-bold leading-none tracking-tight text-ink sm:text-6xl"
+                />
+              </div>
+              <p className="mx-auto mt-4 max-w-md text-base leading-relaxed text-ink-mute">
                 Cada empresa recebe um plano sob medida — o valor depende do seu
                 cenário, e a gente mostra na conversa.
               </p>

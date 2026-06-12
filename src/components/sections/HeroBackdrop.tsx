@@ -22,7 +22,7 @@ export function HeroBackdrop() {
         fill
         priority
         sizes="100vw"
-        className="object-cover object-[72%_center]"
+        className="object-cover object-top md:object-center"
       />
     </motion.div>
   );

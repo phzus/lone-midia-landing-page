@@ -1,21 +1,37 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
-import { Menu, X, MessageCircle } from "lucide-react";
+import { Menu, X } from "lucide-react";
 import { NAV_LINKS, whatsappHref } from "@/lib/site";
 import { Button } from "@/components/ui/Button";
+import { WhatsAppIcon } from "@/components/ui/BrandIcons";
 import { cn } from "@/lib/cn";
 
 export function Navbar() {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const headerRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 12);
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  useEffect(() => {
+    const el = headerRef.current;
+    if (!el) return;
+    const set = () =>
+      document.documentElement.style.setProperty(
+        "--navbar-h",
+        `${el.offsetHeight}px`,
+      );
+    set();
+    const ro = new ResizeObserver(set);
+    ro.observe(el);
+    return () => ro.disconnect();
   }, []);
 
   useEffect(() => {
@@ -29,45 +45,59 @@ export function Navbar() {
   }, [open]);
 
   return (
-    <header className="sticky top-0 z-50">
+    <header
+      ref={headerRef}
+      className="sticky top-0 z-50"
+      style={{ marginBottom: "calc(var(--navbar-h) * -1)" }}
+    >
       <div className="px-4 pt-3 sm:pt-4">
         <nav
           className={cn(
             "mx-auto flex max-w-7xl items-center justify-between rounded-full border px-4 py-2.5 transition-colors sm:px-6",
             scrolled ? "glass border-white/10" : "border-transparent",
           )}
+          style={
+            scrolled
+              ? {
+                  WebkitBackdropFilter: "blur(8px)",
+                  backdropFilter: "blur(8px)",
+                }
+              : undefined
+          }
         >
-          <a
-            href="#home"
-            className="relative block h-7 w-[124px] shrink-0"
-            aria-label="Lone Mídia — início"
-          >
-            <Image
-              src="/brand/logo.png"
-              alt="Lone Mídia"
-              fill
-              priority
-              sizes="124px"
-              className="object-contain object-left"
-            />
-          </a>
+          <div className="flex items-center gap-6 xl:gap-10">
+            <a
+              href="#home"
+              className="relative block h-7 w-[124px] shrink-0"
+              aria-label="Lone Mídia — início"
+            >
+              <Image
+                src="/brand/logo.png"
+                alt="Lone Mídia"
+                fill
+                priority
+                sizes="124px"
+                className="object-contain object-left"
+              />
+            </a>
 
-          <ul className="hidden items-center gap-8 lg:flex">
-            {NAV_LINKS.map((l) => (
-              <li key={l.href}>
-                <a
-                  href={l.href}
-                  className="text-sm text-ink-soft transition-colors hover:text-ink"
-                >
-                  {l.label}
-                </a>
-              </li>
-            ))}
-          </ul>
+            <ul className="hidden items-center gap-7 lg:flex">
+              {NAV_LINKS.map((l) => (
+                <li key={l.href}>
+                  <a
+                    href={l.href}
+                    className="text-sm text-ink-soft transition-colors hover:text-ink"
+                  >
+                    {l.label}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
 
           <div className="hidden items-center gap-3 lg:flex">
             <Button href={whatsappHref()} external variant="ghost">
-              <MessageCircle className="h-4 w-4" aria-hidden="true" />
+              <WhatsAppIcon className="h-4 w-4" />
               WhatsApp
             </Button>
             <Button href="#diagnostico" variant="primary">
@@ -136,7 +166,7 @@ export function Navbar() {
                 size="lg"
                 onClick={() => setOpen(false)}
               >
-                <MessageCircle className="h-5 w-5" aria-hidden="true" />
+                <WhatsAppIcon className="h-5 w-5" />
                 Falar no WhatsApp
               </Button>
               <Button

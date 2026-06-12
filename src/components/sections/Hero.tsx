@@ -10,26 +10,48 @@ export function Hero() {
   return (
     <section
       id="home"
-      className="relative isolate flex min-h-[86vh] flex-col overflow-hidden bg-night"
+      className="relative isolate flex min-h-[calc(100svh-var(--announce-h))] flex-col overflow-hidden bg-night"
     >
-      {/* Imagem composta (fundadores + glow + gráfico) com parallax no scroll */}
+      {/* Imagem de fundo (fundadores + glow + gráfico) com parallax no scroll */}
       <HeroBackdrop />
-      {/* Scrims p/ legibilidade do texto à esquerda */}
-      <div className="absolute inset-0 -z-10 bg-linear-to-r from-night via-night/85 to-night/20" />
-      <div className="absolute inset-0 -z-10 bg-linear-to-t from-night via-transparent to-night/60" />
       {/* Spotlight azul */}
       <GlowBlob breathe className="left-[-8%] top-[10%] h-[520px] w-[520px]" />
 
-      <Container className="relative z-10 flex flex-1 flex-col justify-center pt-16 pb-10 sm:pt-20">
+      {/* Cards de resultado flutuando empilhados à direita (desktop) */}
+      <div className="pointer-events-none absolute inset-y-0 right-6 z-10 hidden flex-col justify-end gap-4 pb-20 lg:flex xl:right-12">
+        {STATS.slice(0, 2).map((s, i) => (
+          <div
+            key={s.value}
+            className="flex max-w-sm items-center gap-2 rounded-2xl border border-white/10 px-3 py-4 shadow-[inset_0_1px_0_0_rgba(255,255,255,0.06)]"
+            style={{
+              WebkitBackdropFilter: "blur(8px)",
+              backdropFilter: "blur(8px)",
+              backgroundColor: "rgba(14,14,18,0.5)",
+              backgroundImage:
+                "linear-gradient(to left, rgba(45,91,255,0.2), transparent 70%)",
+              transform: `translateX(${i % 2 === 0 ? 0 : -32}px)`,
+            }}
+          >
+            <span className="font-display text-2xl font-bold tracking-tight text-ink xl:text-3xl">
+              {s.value}
+            </span>
+            <span className="max-w-[24ch] text-xs leading-[1.2] text-[#d9d9d9]">
+              {s.label}
+            </span>
+          </div>
+        ))}
+      </div>
+
+      <Container className="relative z-10 flex flex-1 flex-col justify-center pt-28 pb-14 sm:pt-32">
         <Stagger className="max-w-2xl">
           <StaggerItem>
-            <h1 className="font-display text-[clamp(2.25rem,6vw,4.4rem)] font-bold leading-[1.03] tracking-[-0.03em]">
+            <h1 className="max-w-lg font-display text-[clamp(2.5rem,4.6vw,4rem)] font-bold leading-[1.05] tracking-[-0.03em]">
               <span className="block font-medium text-ink-soft">
                 Receita{" "}
                 <span className="bg-linear-to-r from-cyan to-brand-hi bg-clip-text font-bold text-transparent">
                   previsível
-                </span>{" "}
-                todo mês,
+                </span>
+                ,
               </span>
               <span className="block text-ink">
                 sem depender de sorte no anúncio.
@@ -38,7 +60,7 @@ export function Hero() {
           </StaggerItem>
 
           <StaggerItem>
-            <p className="mt-6 max-w-xl text-lg leading-relaxed text-ink-soft">
+            <p className="mt-6 md:w-lg text-lg leading-relaxed text-ink-soft">
               Mais de 40 empresas já usam o método{" "}
               <strong className="font-semibold text-ink">Lone Growth</strong>{" "}
               pra parar de gastar com anúncio que não vende. Tráfego pago
@@ -54,29 +76,26 @@ export function Hero() {
               Ver como funciona
             </Button>
           </StaggerItem>
-        </Stagger>
 
-        {/* Stats */}
-        <Stagger className="mt-14">
-          <dl className="grid max-w-2xl grid-cols-1 gap-4 sm:grid-cols-3">
+          {/* Faixa de logos — logo abaixo dos CTAs */}
+          <StaggerItem className="mt-10 max-w-md">
+            <ClientLogos />
+          </StaggerItem>
+
+          {/* Stats no fluxo (mobile/tablet — não cabem flutuando) */}
+          <StaggerItem className="mt-8 grid grid-cols-1 gap-3 sm:grid-cols-3 lg:hidden">
             {STATS.map((s) => (
-              <StaggerItem key={s.value} className="glass rounded-xl px-5 py-4">
-                <dt className="font-display text-3xl font-bold tracking-tight text-ink">
+              <div key={s.value} className="glass rounded-xl px-4 py-4">
+                <div className="font-display text-2xl font-bold tracking-tight text-ink">
                   {s.value}
-                </dt>
-                <dd className="mt-1 text-sm leading-snug text-ink-mute">
+                </div>
+                <div className="mt-1 text-sm leading-snug text-ink-mute">
                   {s.label}
-                </dd>
-              </StaggerItem>
+                </div>
+              </div>
             ))}
-          </dl>
+          </StaggerItem>
         </Stagger>
-      </Container>
-
-      {/* Faixa de logos */}
-      <Container className="relative z-10 pb-10">
-        <p className="eyebrow mb-4">Quem já confia na Lone Mídia</p>
-        <ClientLogos />
       </Container>
     </section>
   );

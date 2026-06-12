@@ -11,11 +11,14 @@ const bgMap: Record<Bg, string> = {
 export function Section({
   id,
   bg = "night",
+  overflow = "hidden",
   className,
   children,
 }: {
   id?: string;
   bg?: Bg;
+  /** "visible" deixa o glow vazar p/ fora da seção (e a eleva acima da vizinha). */
+  overflow?: "hidden" | "visible";
   className?: string;
   children: React.ReactNode;
 }) {
@@ -23,7 +26,10 @@ export function Section({
     <section
       id={id}
       className={cn(
-        "relative overflow-hidden py-24 sm:py-28 lg:py-32",
+        "relative py-24 sm:py-28 lg:py-32",
+        overflow === "visible"
+          ? "z-10 overflow-x-clip overflow-y-visible"
+          : "overflow-hidden",
         bgMap[bg],
         className,
       )}

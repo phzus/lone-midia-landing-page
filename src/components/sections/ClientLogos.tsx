@@ -15,7 +15,7 @@ export function ClientLogos() {
       aria-label="Marcas que confiam na Lone Mídia"
     >
       <div
-        className="marquee-track items-center gap-10 py-1 sm:gap-14"
+        className="marquee-track items-center gap-2.5 py-1 sm:gap-4.5"
         style={{ "--marquee-duration": "45s" } as React.CSSProperties}
       >
         {items.map((src, i) => (

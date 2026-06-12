@@ -18,12 +18,12 @@ export default function Home() {
       <Navbar />
       <main>
         <Hero />
+        <LeadFormSection />
         <LoneGrowth />
         <CinematicDisplay />
         <Testimonials />
         <ValueStack />
         <FinalCta />
-        <LeadFormSection />
       </main>
       <Footer />
       <MetaPixel />

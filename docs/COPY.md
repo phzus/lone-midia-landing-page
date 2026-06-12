@@ -91,7 +91,8 @@ previsibilidade, ROI), zero jargão vazio. Frase-âncora: **"Cada anúncio tem u
 
 **Preço final + CTA** — ✅ DECISÃO: **número escondido** ("valor apresentado no diagnóstico"):
 - Âncora riscada (vermelho): ~~Valor real da entrega: R$ 19.400~~
-- Destaque (no lugar do "R$??"): **"O investimento é apresentado no seu diagnóstico gratuito"**
+- Destaque (no lugar do "R$??"): **preço "secreto" embaralhando p/ sempre** — `Por apenas` + `R$ ??,??` (números +
+  caracteres especiais girando sem nunca parar) + `ou R$ ?? à vista`. Componente [ScramblePrice](../src/components/ui/ScramblePrice.tsx).
   - Subtexto: *Cada empresa recebe um plano sob medida — o valor depende do seu cenário, e a gente mostra na conversa.*
 - CTA: **"Quero meu diagnóstico gratuito"** (mesmo destino do form — consistência de conversão)
 - *Por quê:* value stacking (Hormozi) com âncora real (R$ 19.400) cria percepção de valor; esconder o número

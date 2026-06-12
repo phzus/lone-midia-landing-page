@@ -1,5 +1,23 @@
 # Progresso — Landing Page (Lone Mídia)
 
+## 2026-06-12 — Hero full-bleed + Meta Pixel ativo ✅
+- **Hero ocupa a viewport:** altura agora `calc(100svh − var(--announce-h))` — sobra exatamente a faixa azul de ICP no topo.
+  `TopBar` e `Navbar` medem a própria altura (`ResizeObserver`) e publicam `--announce-h`/`--navbar-h` em `:root` (fallback em
+  [globals.css](../src/app/globals.css) p/ evitar layout shift no SSR). A navbar passa a **sobrepor** o hero via
+  `margin-bottom: calc(var(--navbar-h) * -1)` no `<header>` sticky, então a imagem cobre a tela toda atrás dela.
+- **Overlay removido:** saíram os dois scrims (`from-night…`) sobre a imagem — pedido do Pedro. Restou só o `GlowBlob` azul.
+- **Posição da imagem:** `object-top` no mobile (topo colado no topo da tela) → `md:object-center` no desktop. Parallax mantido.
+- **Layout do hero (ref. do Pedro):** stats viraram **cards flutuantes empilhados à direita** (`absolute`, `lg+`, leve
+  stagger horizontal por `translateX`); no mobile/tablet caem no fluxo (`lg:hidden`). Carrossel de logos saiu do container
+  próprio e foi pra **dentro do bloco de texto** (`max-w-2xl`), logo abaixo dos CTAs — tudo concentrado em 100vh.
+- **Meta Pixel ligado:** `NEXT_PUBLIC_META_PIXEL_ID=1486183085339158` no `.env.local` (componente já existia, carregava só
+  pós-consentimento). Falta cadastrar a var na Vercel. Detalhes em [INTEGRACOES.md](INTEGRACOES.md#meta-pixel).
+- **Preço "secreto" no ValueStack:** no lugar de "O investimento é apresentado…" entra o componente
+  [ScramblePrice](../src/components/ui/ScramblePrice.tsx) — `R$ ??,??` embaralhando **só números + caracteres especiais**,
+  sem nunca parar num valor (efeito teaser; valor real só no diagnóstico). SSR determinístico (`?`) p/ não quebrar
+  hidratação, slots de largura fixa p/ não tremer, `aria-hidden` + `sr-only` p/ a11y, respeita `prefers-reduced-motion`.
+- `bun run build` limpo.
+
 ## 2026-06-08 — Animações cinematográficas (Framer Motion) ✅
 - **Decisão de lib:** só **Framer Motion**, sem GSAP ([ADR 0006](adr/0006-animacoes-framer-motion.md)) — um sistema
   só, React-first, `useReducedMotion` integrado. `gsap` vira dep não usada (pode remover depois).

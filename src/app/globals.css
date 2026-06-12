@@ -36,6 +36,9 @@
 
 :root {
   color-scheme: dark;
+  /* Alturas medidas em runtime (fallback p/ SSR sem layout shift visível). */
+  --announce-h: 40px;
+  --navbar-h: 84px;
 }
 
 html {

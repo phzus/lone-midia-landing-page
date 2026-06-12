@@ -11,7 +11,7 @@ import { PILLARS } from "@/lib/content";
 
 export function LoneGrowth() {
   return (
-    <Section id="metodologia" bg="coal">
+    <Section id="metodologia" bg="coal" overflow="visible">
       <GlowBlob className="right-[-10%] top-[-5%] h-[460px] w-[460px] opacity-15" />
       <Container className="relative">
         <div className="max-w-3xl">

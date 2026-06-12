@@ -73,7 +73,7 @@ Browser (LeadForm: RHF + Zod + Turnstile)
 - Lead fora do ICP: site **agradece igual** (não revelar rejeição); entra em nutrição.
 
 ## Meta Pixel (`src/components/MetaPixel.tsx` + `src/lib/pixel.ts`)
-- **PageView** via `next/script` `afterInteractive`, **só após consentimento** (Consent Mode: `revoke` → `grant`). `NEXT_PUBLIC_META_PIXEL_ID` (público; ID real a definir).
+- **PageView** via `next/script` `afterInteractive`, **só após consentimento** (Consent Mode: `revoke` → `grant`). `NEXT_PUBLIC_META_PIXEL_ID` = `1486183085339158` (configurado em `.env.local`; cadastrar igual na Vercel).
 - **Lead** no callback de sucesso do POST (nunca antes): `fbq('track','Lead',{currency:'BRL',content_name:'Diagnostico Gratuito'},{eventID: idempotencyKey})`.
 - **CAPI** no n8n (branch C) com `event_id` = mesma `idempotencyKey` → **dedupe** Pixel+CAPI. Token CAPI **só no n8n**.
 
