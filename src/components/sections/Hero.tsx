@@ -15,7 +15,7 @@ export function Hero() {
       {/* Imagem de fundo (fundadores + glow + gráfico) com parallax no scroll */}
       <HeroBackdrop />
       {/* Spotlight azul */}
-      <GlowBlob breathe className="left-[-8%] top-[10%] h-[520px] w-[520px]" />
+      <GlowBlob breathe className="left-[-8%] top-[10%] hidden h-[520px] w-[520px] md:block" />
 
       {/* Cards de resultado flutuando empilhados à direita (desktop) */}
       <div className="pointer-events-none absolute inset-y-0 right-6 z-10 hidden flex-col justify-end gap-4 pb-20 lg:flex xl:right-12">

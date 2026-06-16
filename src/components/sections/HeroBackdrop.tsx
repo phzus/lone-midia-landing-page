@@ -24,7 +24,7 @@ export function HeroBackdrop() {
           alt="Fundadores da Lone Mídia"
           fetchPriority="high"
           decoding="async"
-          className="absolute inset-0 h-full w-full object-cover object-top"
+          className="absolute inset-0 h-full w-full translate-y-[15px] object-cover object-top md:translate-y-0"
         />
       </picture>
     </motion.div>
