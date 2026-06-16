@@ -1,5 +1,9 @@
 # Progresso — Landing Page (Lone Mídia)
 
+## 2026-06-16 — Favicon por modo (dark/light) ✅
+- `public/favicon-light.png` / `favicon-dark.png` via `metadata.icons` com `media: (prefers-color-scheme: …)`;
+  `favicon.ico` movido de `src/app/` p/ `public/` como fallback (evita link concorrente auto-injetado pelo Next).
+
 ## 2026-06-16 — Adaptação mobile do hero ✅
 - **Imagem dedicada no mobile:** `public/hero/bg-hero-mob.png` via `<picture>` em
   [HeroBackdrop](../src/components/sections/HeroBackdrop.tsx) (`source media (min-width:768px)` = desktop) — baixa só
