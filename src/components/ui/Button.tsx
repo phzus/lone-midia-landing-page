@@ -4,7 +4,7 @@ type Variant = "primary" | "ghost";
 type Size = "md" | "lg";
 
 const base =
-  "inline-flex items-center justify-center gap-2 rounded-full font-semibold transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-hi focus-visible:ring-offset-2 focus-visible:ring-offset-night disabled:cursor-not-allowed disabled:opacity-60";
+  "inline-flex items-center justify-center gap-2 rounded-full text-center font-semibold transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-hi focus-visible:ring-offset-2 focus-visible:ring-offset-night disabled:cursor-not-allowed disabled:opacity-60";
 
 const sizes: Record<Size, string> = {
   md: "px-5 py-3 text-sm",

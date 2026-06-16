@@ -42,10 +42,10 @@ export function Hero() {
         ))}
       </div>
 
-      <Container className="relative z-10 flex flex-1 flex-col justify-center pt-28 pb-14 sm:pt-32">
+      <Container className="relative z-10 flex flex-1 flex-col justify-center pt-[90vw] pb-0 sm:pt-32 sm:pb-14">
         <Stagger className="max-w-2xl">
           <StaggerItem>
-            <h1 className="max-w-lg font-display text-[clamp(2.5rem,4.6vw,4rem)] font-bold leading-[1.05] tracking-[-0.03em]">
+            <h1 className="max-w-lg font-display text-[clamp(2.6rem,4.6vw,4rem)] font-bold leading-[1.05] tracking-[-0.03em]">
               <span className="block font-medium text-ink-soft">
                 Receita{" "}
                 <span className="bg-linear-to-r from-cyan to-brand-hi bg-clip-text font-bold text-transparent">
@@ -60,7 +60,7 @@ export function Hero() {
           </StaggerItem>
 
           <StaggerItem>
-            <p className="mt-6 md:w-lg text-lg leading-relaxed text-ink-soft">
+            <p className="mt-6 md:w-lg text-sm leading-relaxed text-ink-soft sm:text-lg">
               Mais de 40 empresas já usam o método{" "}
               <strong className="font-semibold text-ink">Lone Growth</strong>{" "}
               pra parar de gastar com anúncio que não vende. Tráfego pago
@@ -77,23 +77,9 @@ export function Hero() {
             </Button>
           </StaggerItem>
 
-          {/* Faixa de logos — logo abaixo dos CTAs */}
-          <StaggerItem className="mt-10 max-w-md">
+          {/* Faixa de logos — inline no desktop; no mobile vai p/ <MobileProof> */}
+          <StaggerItem className="mt-10 hidden max-w-md lg:block">
             <ClientLogos />
-          </StaggerItem>
-
-          {/* Stats no fluxo (mobile/tablet — não cabem flutuando) */}
-          <StaggerItem className="mt-8 grid grid-cols-1 gap-3 sm:grid-cols-3 lg:hidden">
-            {STATS.map((s) => (
-              <div key={s.value} className="glass rounded-xl px-4 py-4">
-                <div className="font-display text-2xl font-bold tracking-tight text-ink">
-                  {s.value}
-                </div>
-                <div className="mt-1 text-sm leading-snug text-ink-mute">
-                  {s.label}
-                </div>
-              </div>
-            ))}
           </StaggerItem>
         </Stagger>
       </Container>

@@ -73,7 +73,7 @@ Browser (LeadForm: RHF + Zod + Turnstile)
 - Lead fora do ICP: site **agradece igual** (não revelar rejeição); entra em nutrição.
 
 ## Meta Pixel (`src/components/MetaPixel.tsx` + `src/lib/pixel.ts`)
-- **PageView** via `next/script` `afterInteractive`, **só após consentimento** (Consent Mode: `revoke` → `grant`). `NEXT_PUBLIC_META_PIXEL_ID` = `1486183085339158` (configurado em `.env.local`; cadastrar igual na Vercel).
+- **PageView** via `next/script` `afterInteractive`, **modelo opt-out**: carrega por padrão e só NÃO carrega se o visitante clicar "Recusar" (`consent === "denied"` → `fbq('consent','revoke')`). O banner segue aparecendo p/ dar a opção de recusa (LGPD). `NEXT_PUBLIC_META_PIXEL_ID` = `1486183085339158` (em `.env.local`; cadastrar igual na Vercel + **redeploy**, pois `NEXT_PUBLIC_` é embutido no build).
 - **Lead** no callback de sucesso do POST (nunca antes): `fbq('track','Lead',{currency:'BRL',content_name:'Diagnostico Gratuito'},{eventID: idempotencyKey})`.
 - **CAPI** no n8n (branch C) com `event_id` = mesma `idempotencyKey` → **dedupe** Pixel+CAPI. Token CAPI **só no n8n**.
 

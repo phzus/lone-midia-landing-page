@@ -1,6 +1,7 @@
 import { TopBar } from "@/components/sections/TopBar";
 import { Navbar } from "@/components/sections/Navbar";
 import { Hero } from "@/components/sections/Hero";
+import { MobileProof } from "@/components/sections/MobileProof";
 import { LoneGrowth } from "@/components/sections/LoneGrowth";
 import { CinematicDisplay } from "@/components/sections/CinematicDisplay";
 import { Testimonials } from "@/components/sections/Testimonials";
@@ -18,6 +19,7 @@ export default function Home() {
       <Navbar />
       <main>
         <Hero />
+        <MobileProof />
         <LeadFormSection />
         <LoneGrowth />
         <CinematicDisplay />

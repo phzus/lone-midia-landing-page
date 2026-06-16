@@ -28,9 +28,9 @@ export function TopBar() {
       ref={ref}
       className="relative z-40 bg-brand text-white shadow-[inset_0_1px_0_0_rgba(255,255,255,0.18)]"
     >
-      <div className="mx-auto flex max-w-7xl items-center justify-center gap-2 px-4 py-2 text-center">
+      <div className="mx-auto flex max-w-7xl items-center justify-center gap-5 px-8 py-2 text-center sm:px-4">
         <Lock className="h-3.5 w-3.5 shrink-0" aria-hidden="true" />
-        <p className="text-[11px] font-bold uppercase tracking-[0.12em] sm:text-xs">
+        <p className="text-[10px] font-bold uppercase leading-none tracking-[0.12em]">
           {ICP_BANNER}
         </p>
       </div>

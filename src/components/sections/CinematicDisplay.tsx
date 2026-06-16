@@ -17,7 +17,7 @@ export function CinematicDisplay() {
         </Reveal>
         <CinematicHeadline lines={["Escala", "Previsível"]} />
         <Reveal delay={0.1}>
-          <p className="mx-auto mt-8 max-w-xl text-lg leading-relaxed text-ink-soft">
+          <p className="mx-auto mt-8 max-w-xl text-sm leading-relaxed text-ink-soft sm:text-lg">
             Você aumenta o investimento sabendo quanto retorna. Crescer deixa de
             ser aposta e vira processo.
           </p>

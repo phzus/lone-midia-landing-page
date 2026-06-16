@@ -1,10 +1,10 @@
 "use client";
 
-import Image from "next/image";
 import { motion, useReducedMotion, useScroll, useTransform } from "framer-motion";
 
 /** Imagem de fundo do hero com parallax sutil no scroll (transform-only, 60fps).
- *  Sempre levemente "overscan" (scale ≥ 1.1) p/ nunca abrir borda ao deslocar. */
+ *  Art-direction: imagem dedicada no mobile (<picture> baixa só a versão certa).
+ *  Sempre "overscan" (scale ≥ 1.1) p/ nunca abrir borda ao deslocar. */
 export function HeroBackdrop() {
   const reduce = useReducedMotion();
   const { scrollY } = useScroll();
@@ -16,14 +16,17 @@ export function HeroBackdrop() {
       className="absolute inset-0 -z-10 will-change-transform"
       style={reduce ? { scale: 1.1 } : { y, scale }}
     >
-      <Image
-        src="/hero/bg-hero-desk.png"
-        alt="Fundadores da Lone Mídia"
-        fill
-        priority
-        sizes="100vw"
-        className="object-cover object-top md:object-center"
-      />
+      <picture>
+        <source media="(min-width: 768px)" srcSet="/hero/bg-hero-desk.png" />
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src="/hero/bg-hero-mob.png"
+          alt="Fundadores da Lone Mídia"
+          fetchPriority="high"
+          decoding="async"
+          className="absolute inset-0 h-full w-full object-cover object-top"
+        />
+      </picture>
     </motion.div>
   );
 }

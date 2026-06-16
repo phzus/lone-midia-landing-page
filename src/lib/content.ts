@@ -4,7 +4,6 @@
 export const STATS = [
   { value: "+R$10 mi", label: "em receita gerada para nossos clientes" },
   { value: "+100%", label: "de crescimento médio nos cases que acompanhamos" },
-  { value: "+40", label: "negócios escalados com o método Lone Growth" },
 ] as const;
 
 export const PILLARS = [

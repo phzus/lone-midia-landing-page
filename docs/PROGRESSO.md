@@ -1,5 +1,13 @@
 # Progresso — Landing Page (Lone Mídia)
 
+## 2026-06-16 — Adaptação mobile do hero ✅
+- **Imagem dedicada no mobile:** `public/hero/bg-hero-mob.png` via `<picture>` em
+  [HeroBackdrop](../src/components/sections/HeroBackdrop.tsx) (`source media (min-width:768px)` = desktop) — baixa só
+  a versão certa por breakpoint. `object-top` no mobile, `object-center` no desktop; parallax mantido.
+- **Mais imagem à mostra:** `pt-[60vw]` no container do hero (só mobile; `sm:pt-32` no resto) empurra o conteúdo p/ baixo.
+- **Cards de prova:** stat "+40 negócios" **removido** de [content.ts](../src/lib/content.ts) (só 2 agora, mobile e desktop).
+  No mobile os cards viraram **row** (valor + label lado a lado, era column) e o label caiu p/ `text-xs` (~12px).
+
 ## 2026-06-12 — Hero full-bleed + Meta Pixel ativo ✅
 - **Hero ocupa a viewport:** altura agora `calc(100svh − var(--announce-h))` — sobra exatamente a faixa azul de ICP no topo.
   `TopBar` e `Navbar` medem a própria altura (`ResizeObserver`) e publicam `--announce-h`/`--navbar-h` em `:root` (fallback em

@@ -26,7 +26,7 @@ export function Section({
     <section
       id={id}
       className={cn(
-        "relative py-24 sm:py-28 lg:py-32",
+        "relative py-16 sm:py-28 lg:py-32",
         overflow === "visible"
           ? "z-10 overflow-x-clip overflow-y-visible"
           : "overflow-hidden",

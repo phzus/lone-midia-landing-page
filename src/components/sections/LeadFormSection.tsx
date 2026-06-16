@@ -26,7 +26,7 @@ export function LeadFormSection() {
             <h2 className="mt-5 font-display text-[clamp(2rem,4vw,2.75rem)] font-bold leading-[1.08] tracking-[-0.02em] text-ink">
               Descubra onde sua receita está vazando
             </h2>
-            <p className="mt-5 text-lg leading-relaxed text-ink-soft">
+            <p className="mt-5 text-sm leading-relaxed text-ink-soft sm:text-lg">
               Em até 48h, um especialista analisa seus anúncios, seu funil e seu
               comercial e te mostra exatamente o que mudar pra vender mais — sem
               discurso pronto. Se você fatura acima de R$ 100 mil/mês, agendamos

@@ -4,19 +4,27 @@ import Script from "next/script";
 import { useEffect, useState } from "react";
 import { getConsent, CONSENT_EVENT } from "@/lib/consent";
 
-/** Meta Pixel — só carrega APÓS consentimento (LGPD) e se o ID estiver configurado. */
+/** Meta Pixel — modelo opt-out: carrega por padrão (se o ID estiver configurado)
+ *  e só NÃO carrega se o visitante recusar. Ao recusar depois de já ter carregado,
+ *  revoga o consentimento p/ interromper novos eventos. */
 export function MetaPixel() {
   const pixelId = process.env.NEXT_PUBLIC_META_PIXEL_ID;
-  const [granted, setGranted] = useState(false);
+  const [allowed, setAllowed] = useState(false);
 
   useEffect(() => {
-    const sync = () => setGranted(getConsent() === "granted");
+    const sync = () => setAllowed(getConsent() !== "denied");
     sync();
     window.addEventListener(CONSENT_EVENT, sync);
     return () => window.removeEventListener(CONSENT_EVENT, sync);
   }, []);
 
-  if (!pixelId || !granted) return null;
+  useEffect(() => {
+    if (!allowed && typeof window.fbq === "function") {
+      window.fbq("consent", "revoke");
+    }
+  }, [allowed]);
+
+  if (!pixelId || !allowed) return null;
 
   return (
     <>

@@ -13,7 +13,7 @@ export function FinalCta() {
           <h2 className="mx-auto max-w-3xl font-display text-[clamp(2rem,5vw,3.25rem)] font-bold leading-[1.05] tracking-[-0.03em] text-ink">
             O mercado não espera. Seu concorrente também não.
           </h2>
-          <p className="mx-auto mt-5 max-w-xl text-lg leading-relaxed text-ink-soft">
+          <p className="mx-auto mt-5 max-w-xl text-sm leading-relaxed text-ink-soft sm:text-lg">
             Enquanto você decide, o lead que era seu está respondendo o anúncio
             de outro. Comece pelo diagnóstico — é gratuito e mostra exatamente
             onde sua receita está vazando.

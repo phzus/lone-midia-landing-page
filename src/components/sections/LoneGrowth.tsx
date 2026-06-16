@@ -21,7 +21,7 @@ export function LoneGrowth() {
               A metodologia que transforma seu marketing de centro de custo em{" "}
               <span className="text-brand">máquina de vendas previsível</span>.
             </h2>
-            <div className="mt-6 space-y-4 text-lg leading-relaxed text-ink-soft">
+            <div className="mt-6 space-y-4 text-sm leading-relaxed text-ink-soft sm:text-lg">
               <p>
                 Seu concorrente impulsiona post e reza pra dar venda. A Lone faz
                 o contrário: cada anúncio entra com objetivo de receita, e cada
