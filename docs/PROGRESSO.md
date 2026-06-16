@@ -1,5 +1,14 @@
 # Progresso — Landing Page (Lone Mídia)
 
+## 2026-06-16 — Depoimentos viram carrossel de vídeos ✅
+- Seção `#resultados` deixou de ser cards de texto e virou **carrossel (Swiper 12)** de vídeos de clientes
+  ([TestimonialCarousel](../src/components/sections/TestimonialCarousel.tsx)).
+- **Vídeos:** 5 `.MOV` 4K HEVC (do editor) transcodados via ffmpeg p/ **MP4 H.264 720p** + faststart + poster JPG
+  em `public/depoimentos/` (1–2 MB cada; HEVC não toca em Chrome/Firefox). `.MOV` originais ficam fora do repo.
+- **Enquadramento:** vídeo 16:9 dentro de frame **4:5** via `object-cover`; `posX` (em [content.ts](../src/lib/content.ts)
+  `TESTIMONIAL_VIDEOS`) regula o recorte no eixo X. Hoje todos em `50%` — ajustar por vídeo.
+- **Pendente:** nomes/cargos reais dos clientes (não inventados — campos `name`/`role` vazios; label só aparece se preenchido).
+
 ## 2026-06-16 — Favicon por modo (dark/light) ✅
 - `public/favicon-light.png` / `favicon-dark.png` via `metadata.icons` com `media: (prefers-color-scheme: …)`;
   `favicon.ico` movido de `src/app/` p/ `public/` como fallback (evita link concorrente auto-injetado pelo Next).

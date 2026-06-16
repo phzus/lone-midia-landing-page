@@ -224,6 +224,21 @@ body {
   transform: translateX(130%);
 }
 
+/* ---------- Carrossel de depoimentos (Swiper) ---------- */
+.depo-swiper .swiper-pagination-bullet {
+  background: var(--color-ink-mute);
+  opacity: 0.5;
+}
+.depo-swiper .swiper-pagination-bullet-active {
+  background: var(--color-brand-hi);
+  opacity: 1;
+}
+/* setas customizadas: somem quando no início/fim */
+.depo-nav.swiper-button-disabled {
+  opacity: 0;
+  pointer-events: none;
+}
+
 /* ---------- Acessibilidade: reduzir movimento ---------- */
 @media (prefers-reduced-motion: reduce) {
   html {

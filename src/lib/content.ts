@@ -36,8 +36,8 @@ export const VALUE_STACK = [
   { label: "Script de vendas e atendimento pelo WhatsApp", price: 1000 },
   { label: "Análise de concorrência e posicionamento", price: 1600 },
   { label: "Plano de ação dos próximos 90 dias", price: 2000 },
-  { label: "Criativos iniciais prontos pra rodar", price: 3000 },
-  { label: "Funil de conteúdo para o Instagram", price: 1000 },
+  { label: "Criativos iniciais prontos pra rodar", price: 1000 },
+  { label: "Funil de conteúdo para o Instagram", price: 3000 },
   { label: "Reformulação visual do perfil do Instagram", price: 1500 },
   { label: "Suporte consultivo direto com o time", price: 1500 },
 ] as const;
@@ -50,6 +50,17 @@ export const TESTIMONIALS_PLACEHOLDER = [
   { result: "Resultado em destaque", quote: "Depoimento real a ser preenchido com case do cliente (antes → depois → como).", name: "Nome do cliente", role: "Cargo · Empresa", handle: "@empresa" },
   { result: "Resultado em destaque", quote: "Depoimento real a ser preenchido com case do cliente (antes → depois → como).", name: "Nome do cliente", role: "Cargo · Empresa", handle: "@empresa" },
 ] as const;
+
+// Vídeos de depoimento (clientes reais). Frame 4:5; vídeo 16:9 com object-cover —
+// `posX` regula o recorte horizontal (eixo X) p/ enquadrar a pessoa no centro.
+// NOMES/CARGOS reais pendentes — não inventar; preencher quando o cliente passar.
+export const TESTIMONIAL_VIDEOS = [
+  { src: "/depoimentos/depoimento-01.mp4", poster: "/depoimentos/depoimento-01.jpg", posX: "50%", name: "Vanessa", company: "Império dos Pisos" },
+  { src: "/depoimentos/depoimento-02.mp4", poster: "/depoimentos/depoimento-02.jpg", posX: "50%", name: "Wanderson", company: "Araruama Tintas" },
+  { src: "/depoimentos/depoimento-03.mp4", poster: "/depoimentos/depoimento-03.jpg", posX: "45%", name: "Cristiane", company: "Contelle Solar" },
+  { src: "/depoimentos/depoimento-04.mp4", poster: "/depoimentos/depoimento-04.jpg", posX: "50%", name: "Matheus", company: "Paradise Suplementos" },
+  { src: "/depoimentos/depoimento-05.mp4", poster: "/depoimentos/depoimento-05.jpg", posX: "50%", name: "Bruno", company: "Bruno Tintas" },
+];
 
 // Faixa-topo ICP
 export const ICP_BANNER = "EXCLUSIVO PARA EMPRESAS QUE JÁ FATURAM ACIMA DE R$ 100 MIL POR MÊS";
