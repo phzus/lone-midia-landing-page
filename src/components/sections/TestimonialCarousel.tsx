@@ -3,10 +3,9 @@
 import { useRef, useState } from "react";
 import type { Swiper as SwiperType } from "swiper";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Navigation, Pagination, A11y, Keyboard } from "swiper/modules";
+import { Pagination, A11y, Keyboard } from "swiper/modules";
 import { Play, Pause, ChevronLeft, ChevronRight } from "lucide-react";
 import "swiper/css";
-import "swiper/css/navigation";
 import "swiper/css/pagination";
 import { TESTIMONIAL_VIDEOS } from "@/lib/content";
 
@@ -137,8 +136,7 @@ function VideoSlide({
 }
 
 export function TestimonialCarousel() {
-  const prevRef = useRef<HTMLButtonElement>(null);
-  const nextRef = useRef<HTMLButtonElement>(null);
+  const swiperRef = useRef<SwiperType | null>(null);
   const activeRef = useRef<HTMLVideoElement | null>(null);
 
   // Garante um único vídeo tocando por vez (evita áudios sobrepostos).
@@ -162,7 +160,7 @@ export function TestimonialCarousel() {
   };
 
   const navBtn =
-    "depo-nav absolute top-[calc(50%-1.5rem)] z-20 hidden h-11 w-11 -translate-y-1/2 place-items-center rounded-full border border-white/10 bg-glass/70 text-ink backdrop-blur-md transition hover:bg-glass sm:grid";
+    "absolute top-[calc(50%-1.5rem)] z-20 hidden h-11 w-11 -translate-y-1/2 place-items-center rounded-full border border-white/10 bg-glass/70 text-ink backdrop-blur-md transition hover:bg-glass sm:grid lg:size-[50px] lg:cursor-pointer lg:hover:scale-110";
 
   return (
     <div
@@ -172,14 +170,10 @@ export function TestimonialCarousel() {
       aria-label="Depoimentos em vídeo"
     >
       <Swiper
-        modules={[Navigation, Pagination, A11y, Keyboard]}
-        navigation={{ prevEl: prevRef.current, nextEl: nextRef.current }}
-        onBeforeInit={(swiper) => {
-          const nav = swiper.params.navigation;
-          if (nav && typeof nav !== "boolean") {
-            nav.prevEl = prevRef.current;
-            nav.nextEl = nextRef.current;
-          }
+        modules={[Pagination, A11y, Keyboard]}
+        onSwiper={(s) => {
+          swiperRef.current = s;
+          applyOffset(s);
         }}
         onAfterInit={applyOffset}
         onResize={applyOffset}
@@ -209,20 +203,20 @@ export function TestimonialCarousel() {
       </Swiper>
 
       <button
-        ref={prevRef}
         type="button"
+        onClick={() => swiperRef.current?.slidePrev()}
         aria-label="Depoimento anterior"
         className={`${navBtn} left-3 lg:left-6`}
       >
-        <ChevronLeft className="h-5 w-5" aria-hidden="true" />
+        <ChevronLeft className="h-5 w-5 lg:h-6 lg:w-6" aria-hidden="true" />
       </button>
       <button
-        ref={nextRef}
         type="button"
+        onClick={() => swiperRef.current?.slideNext()}
         aria-label="Próximo depoimento"
         className={`${navBtn} right-3 lg:right-6`}
       >
-        <ChevronRight className="h-5 w-5" aria-hidden="true" />
+        <ChevronRight className="h-5 w-5 lg:h-6 lg:w-6" aria-hidden="true" />
       </button>
     </div>
   );

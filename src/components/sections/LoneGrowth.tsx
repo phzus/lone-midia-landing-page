@@ -14,9 +14,9 @@ export function LoneGrowth() {
     <Section id="metodologia" bg="coal" overflow="visible">
       <GlowBlob className="right-[-10%] top-[-5%] h-[460px] w-[460px] opacity-15" />
       <Container className="relative">
-        <div className="max-w-3xl">
+        <div className="mx-auto max-w-3xl text-center">
           <Reveal>
-            <Eyebrow>O método Lone Growth</Eyebrow>
+            <Eyebrow className="justify-center">O método Lone Growth</Eyebrow>
             <h2 className="mt-5 font-display text-[clamp(2rem,4vw,2.75rem)] font-bold leading-[1.08] tracking-[-0.02em] text-ink">
               A metodologia que transforma seu marketing de centro de custo em{" "}
               <span className="text-brand">máquina de vendas previsível</span>.
@@ -71,7 +71,7 @@ export function LoneGrowth() {
         </Stagger>
 
         <Reveal delay={0.1}>
-          <p className="mx-auto mt-16 max-w-2xl text-center font-display text-2xl font-light italic tracking-tight text-ink-soft sm:text-3xl">
+          <p className="mx-auto mt-16 max-w-2xl text-center font-display text-2xl font-light italic tracking-tight text-ink-soft sm:text-3xl lg:max-w-none lg:whitespace-nowrap">
             Cada anúncio tem um propósito. Cada palavra, uma função.
           </p>
           <div className="mt-10 flex justify-center">
