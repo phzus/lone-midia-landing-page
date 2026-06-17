@@ -57,9 +57,9 @@ export const TESTIMONIALS_PLACEHOLDER = [
 export const TESTIMONIAL_VIDEOS = [
   { src: "/depoimentos/depoimento-01.mp4", poster: "/depoimentos/depoimento-01.jpg", posX: "50%", name: "Vanessa", company: "Império dos Pisos" },
   { src: "/depoimentos/depoimento-02.mp4", poster: "/depoimentos/depoimento-02.jpg", posX: "50%", name: "Wanderson", company: "Araruama Tintas" },
-  { src: "/depoimentos/depoimento-03.mp4", poster: "/depoimentos/depoimento-03.jpg", posX: "45%", name: "Cristiane", company: "Contelle Solar" },
+  { src: "/depoimentos/depoimento-03.mp4", poster: "/depoimentos/depoimento-03.jpg", posX: "40%", name: "Cristiane", company: "Contelle Solar" },
   { src: "/depoimentos/depoimento-04.mp4", poster: "/depoimentos/depoimento-04.jpg", posX: "50%", name: "Matheus", company: "Paradise Suplementos" },
-  { src: "/depoimentos/depoimento-05.mp4", poster: "/depoimentos/depoimento-05.jpg", posX: "50%", name: "Bruno", company: "Bruno Tintas" },
+  { src: "/depoimentos/depoimento-05.mp4", poster: "/depoimentos/depoimento-05.jpg", posX: "38%", name: "Bruno", company: "Bruno Tintas" },
 ];
 
 // Faixa-topo ICP
