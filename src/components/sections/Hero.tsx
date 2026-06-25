@@ -14,6 +14,11 @@ export function Hero() {
     >
       {/* Imagem de fundo (fundadores + glow + gráfico) com parallax no scroll */}
       <HeroBackdrop />
+      {/* Fade pro preto na base (só mobile) — contraste do texto + emenda com a próxima seção */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-x-0 bottom-0 z-0 h-[55%] bg-gradient-to-b from-transparent to-night md:hidden"
+      />
       {/* Spotlight azul */}
       <GlowBlob breathe className="left-[-8%] top-[10%] hidden h-[520px] w-[520px] md:block" />
 
